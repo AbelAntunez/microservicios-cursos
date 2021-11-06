@@ -19,6 +19,11 @@
     </properties>
     <dependencies>
         <dependency>
+            <groupId>com.curso.microservicios.commons.alumnos</groupId>
+            <artifactId>commons-alumnos</artifactId>
+            <version>0.0.1-SNAPSHOT</version>
+        </dependency>
+        <dependency>
             <groupId>com.curso.microservicios.commons</groupId>
             <artifactId>commons-microservicios</artifactId>
             <version>0.0.1-SNAPSHOT</version>
