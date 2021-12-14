@@ -2,7 +2,9 @@ package com.curso.microservicios.app.cursos.controllers;
 
 import com.curso.microservicios.app.cursos.models.entity.Curso;
 import com.curso.microservicios.app.cursos.services.CursoService;
+import com.curso.microservicios.commons.alumnos.models.entity.Alumno;
 import com.curso.microservicios.commons.controllers.CommonController;
+import java.util.List;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -23,6 +25,28 @@ public class CursoController extends CommonController<Curso, CursoService> {
         }
         Curso cursoDb = o.get();
         cursoDb.setNombre(curso.getNombre());
+        return ResponseEntity.status(HttpStatus.CREATED).body(service.save(cursoDb));
+    }
+
+    @PutMapping("/{id}/asignar-alumnos")
+    public ResponseEntity<?> asignarAlumnos(@RequestBody List<Alumno> alumnos, @PathVariable Long id) {
+        Optional<Curso> o = this.service.findById(id);
+        if (o.isEmpty()) {
+            return ResponseEntity.notFound().build();
+        }
+        Curso cursoDb = o.get();
+        alumnos.forEach(alumno -> cursoDb.addAlumno(alumno));
+        return ResponseEntity.status(HttpStatus.CREATED).body(service.save(cursoDb));
+    }
+
+    @PutMapping("/{id}/eliminar-alumno")
+    public ResponseEntity<?> eliminarAlumno(@RequestBody Alumno alumno, @PathVariable Long id) {
+        Optional<Curso> o = this.service.findById(id);
+        if (o.isEmpty()) {
+            return ResponseEntity.notFound().build();
+        }
+        Curso cursoDb = o.get();
+        cursoDb.removeAlumno(alumno);
         return ResponseEntity.status(HttpStatus.CREATED).body(service.save(cursoDb));
     }
 }
